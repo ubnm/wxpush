@@ -968,6 +968,10 @@ async function getStableToken(appid, secret) {
     body: JSON.stringify(payload)
   });
   const data = await response.json();
+  if (!data.access_token) {
+    const errorCode = Number.isInteger(data.errcode) ? ` (errcode ${data.errcode})` : '';
+    throw new Error(`WeChat token request failed${errorCode}`);
+  }
   return data.access_token;
 }
 
